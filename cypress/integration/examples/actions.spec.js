@@ -2,12 +2,17 @@
 
 context('Actions', () => {
   beforeEach(() => {
-    cy.visit('https://example.cypress.io/commands/actions')
+    cy.visit('https://example.cypress.io/commands/actions', {
+      onBeforeLoad: (win) => {
+        win.fetch = null
+      },
+    })
   })
 
   // https://on.cypress.io/interacting-with-elements
 
   it('.type() - type into a DOM element', () => {
+    cy.server()
     // https://on.cypress.io/type
     cy.get('.action-email')
       .type('fake@email.com').should('have.value', 'fake@email.com')
@@ -41,6 +46,7 @@ context('Actions', () => {
   })
 
   it('.blur() - blur off a DOM element', () => {
+    cy.server()
     // https://on.cypress.io/blur
     cy.get('.action-blur').type('About to blur').blur()
       .should('have.class', 'error')
